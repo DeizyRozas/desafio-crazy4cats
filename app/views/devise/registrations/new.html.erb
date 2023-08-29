@@ -1,0 +1,48 @@
+<div class="main">
+<div class="container">
+  <header>
+    <h2>Registrate para compartir las aventuras de tu gato con el  <strong>mundo:</strong></h2>
+  </header>
+  <div class="row justify-content-center">
+    <div class="col-8 col-12-medium">
+      <section>
+        <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+          <%= render "devise/shared/error_messages", resource: resource %>
+          <div class="row gtr-50">
+
+            <div class="col-12 col-12-small field">
+            <%= f.label :nombre %><br />
+            <%= f.text_field :nombre, autofocus: true, autocomplete: "nombre" %>
+            </div>
+
+            <div class="col-12 col-12-small field ">
+              <%= f.label :email %><br />
+              <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+            </div>
+
+            <div class="col-12 col-12-small field">
+              <%= f.label :password %>
+              <% if @minimum_password_length %>
+              <em>(<%= @minimum_password_length %> characters minimum)</em>
+              <% end %><br />
+              <%= f.password_field :password, autocomplete: "new-password" %>
+            </div>
+
+            <div class="col-12 col-12-small field">
+              <%= f.label :password_confirmation %><br />
+              <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+            </div>
+
+            <div class="actions col-12">
+              <%= f.submit "Registrarse", class:"form-button-submit button" %>
+            </div>
+        <% end %>
+
+        <%= render "devise/shared/links" %>
+
+        </div>
+    </section>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,53 @@
+
+
+
+<!-- Main -->
+<section id="main">
+  <div class="container">
+    <div class="row">
+
+      <!-- Content -->
+        <div id="content" class="col-12 col-12-medium">
+          <!-- Post -->
+            <article class="box highlight">
+              <p style="color: green"><%= notice %></p>
+              <ul class="divided">
+              <li> <%= link_to "Crear Nuevo Post", new_post_path, class:"button" %></li> 
+                <% @posts.each do |post| %>
+                  <a href="/posts/<%= post.id %>">
+                  <li>                        
+                  <p class="fs-2"><%=post.contenido %></p>
+                    <h6>Posteado por: <strong><%=post.user.nombre%></strong> hace <%= time_ago_in_words(post.created_at) %></h6>
+                  <p>
+                  </a>
+                  <p><%= pluralize(post.comments.count, "comentarios") %></p>
+                  <p><%= post.get_upvotes.size %> Likes</p>
+                  <p> <%= post.get_downvotes.size %> Dislikes</p>
+                  
+                <% if user_signed_in? %>
+
+                  <% if current_user.voted_for?(post) %>
+                  <% if post.votes_for.up.by_type(User).voters.include?(current_user) %>
+                    <%= button_to "Dislike", downvote_post_path(post), method: :put, class: "dislike-button" %>
+                  <% else %>
+                    <%= button_to "Like", upvote_post_path(post), method: :put, class: "like-button" %>
+                  <% end %>
+                <% else %>
+                  <%= button_to "Like", upvote_post_path(post), method: :put, class: "like-button" %>
+                  <%= button_to "Dislike", downvote_post_path(post), method: :put, class: "dislike-button" %>
+                <% end %>
+              
+                <% end %>
+
+
+                      <%= link_to "Show this post", post %>
+                    </p>
+                  </li>
+                <% end %>
+              </ul>
+            </article>
+
+        </div>
+    </div>
+  </div>
+</section>

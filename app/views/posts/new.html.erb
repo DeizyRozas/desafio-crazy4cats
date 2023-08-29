@@ -1,0 +1,21 @@
+<div class="main">
+  <div class="container">
+    <header>
+      <h2>Crea un nuevo post para compartir tus aventuras de tu gato con el <strong>mundo:</strong></h2>
+    </header>
+    <div class="row justify-content-center">
+      <div class="col-8 col-12-medium">
+        <section>
+
+        <%= render "form", post: @post %>
+
+        <br>
+
+        <div>
+          <%= link_to "Back to posts", posts_path %>
+        </div>
+
+      </section>
+    </div>
+  </div>
+</div>

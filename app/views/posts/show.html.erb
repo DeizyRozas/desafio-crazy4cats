@@ -1,0 +1,72 @@
+<section id="main">
+  <div class="container">
+    <div class="row">
+      <!-- Content -->
+      <div id="content" class="col-8 col-12-medium">
+          <!-- Post -->
+        <article class="box post">
+          <p style="color: green"><%= notice %></p>
+          <div class="card ">
+            <div class="card-header">
+              <h3>Posteado por <%= @post.user.nombre %> hace <%= time_ago_in_words(@post.created_at) %></h3>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-2"><%= @post.contenido %></p>
+              <p><%= @post.get_upvotes.size %> Likes</p>
+              <p> <%= @post.get_downvotes.size %> Dislikes</p>
+              <% if user_signed_in? %>
+
+                <% if current_user.voted_for?(@post) %>
+                    <% if @post.votes_for.up.by_type(User).voters.include?(current_user) %>
+                      <%= button_to "Dislike", downvote_post_path(@post), method: :put, class: "dislike-button" %>
+                    <% else %>
+                      <%= button_to "Like", upvote_post_path(@post), method: :put, class: "like-button" %>
+                    <% end %>
+                  <% else %>
+                  <%= button_to "Like", upvote_post_path(@post), method: :put, class: "like-button" %>
+                  <%= button_to "Dislike", downvote_post_path(@post), method: :put, class: "dislike-button" %>
+                <% end %>
+              <% end %>  
+              <%= link_to "Back to posts", posts_path %>
+              <% if current_user && current_user.id == @post.user_id %>
+                <%= link_to 'Editar', edit_post_path(@post) %>
+                <%= button_to 'Borrar', @post, method: :delete %>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="card mt-4" style="width: 100%;">
+            <h3 class="m-3"><p><strong><%= pluralize(@post.comments.count, "comentarios") %>:</strong></h3>
+            <ul class="list-group list-group-flush">
+            <% @comments.each do |comment| %>
+              <li class="list-group-item">
+                <h5> <%= comment.user.nombre %> hace <%= time_ago_in_words(comment.created_at) %> :</h5>
+                <p>- <%= comment.content %></p>
+              </li>
+              <% end %>
+            </ul>
+          </div>
+
+          <%= form_with(model: @comment, url: comment_index_path) do |form| %>
+            <%= form.hidden_field :post_id, value: @post.id %>
+            <%= form.hidden_field :user_id, value: current_user.id %>
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+            <h3 class="my-4">Escribe un nuevo comentario:</h3>
+
+            <%= form.fields_for :comment do |comment_fields| %>
+            <div class="field my-3">
+                <%= comment_fields.text_field :content, class: "form-control" %>
+            </div>
+            <% end %>
+
+            <div>
+            <%= form.submit class: "btn btn-sm btn-primary my-3" %>
+            </div>
+        <% end %>
+
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
